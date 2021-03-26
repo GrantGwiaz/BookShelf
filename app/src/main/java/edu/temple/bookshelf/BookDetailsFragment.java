@@ -45,6 +45,8 @@ public class BookDetailsFragment extends Fragment {
         }
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,14 +56,11 @@ public class BookDetailsFragment extends Fragment {
         title = layout.findViewById(R.id.textViewBookTitle);
         author = layout.findViewById(R.id.textViewBookAuthor);
 
-        if( getArguments() != null) {
-            title.setText(book.getTitle());
-            author.setText(book.getAuthor());
-        } else {
+        if (getArguments() == null) {
             book = new Book();
-            title.setText(book.getTitle());
-            author.setText(book.getAuthor());
         }
+        title.setText(book.getTitle());
+        author.setText(book.getAuthor());
 
         title.setTextSize(25);
         author.setTextSize(20);
@@ -74,10 +73,9 @@ public class BookDetailsFragment extends Fragment {
         return layout;
     }
 
-    public void changeBook() {
+    public void changeBook(Book book) {
         title.setText(book.getTitle());
         author.setText(book.getAuthor());
-
     }
 
 

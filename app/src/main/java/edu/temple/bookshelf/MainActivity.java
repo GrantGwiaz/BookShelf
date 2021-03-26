@@ -1,13 +1,12 @@
 package edu.temple.bookshelf;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements BookListFragment.BookListFragmentInterface {
 
@@ -15,42 +14,64 @@ public class MainActivity extends AppCompatActivity implements BookListFragment.
         FragmentManager fragmentManager;
         FragmentTransaction fragmentTransaction;
         BookListFragment bookListFragment;
-        //BookDetailsFragment bookDetailsFragment;
+        BookDetailsFragment bookDetailsFragment;
 
+
+        boolean contain2present;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        contain2present = (findViewById(R.id.container_2) != null);
         //create initial book list and add some boring books
         BookList books = new BookList();
         books.addSomeBooks(10);
 
-        if(getSupportFragmentManager().findFragmentById((R.id.container_1)) instanceof BookListFragment
-                && getSupportFragmentManager().findFragmentById((R.id.container_1)) != null )
-        {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .attach(getSupportFragmentManager().findFragmentById((R.id.container_1)))
-                    .commit();
-
-        } else {
+        if(savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container_1,BookListFragment.newInstance(books))
                     .commit();
         }
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container_1,BookListFragment.newInstance(books))
+                .commit();
+
+        if (contain2present) {
+            bookDetailsFragment = new BookDetailsFragment();
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container_2, bookDetailsFragment)
+                    .commit();
+        }
 
     }
 
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if(newConfig.orientation ==Configuration.ORIENTATION_LANDSCAPE){
+
+        } else if(newConfig.orientation ==Configuration.ORIENTATION_PORTRAIT) {
+
+        }
+    }
+
     public void fragmentClick(Book book) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container_1, BookDetailsFragment.newInstance(book))
-                .addToBackStack(null)
-                .commit();
+        if(!contain2present) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container_1, BookDetailsFragment.newInstance(book))
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            bookDetailsFragment.changeBook(book);
+        }
     }
 
 
