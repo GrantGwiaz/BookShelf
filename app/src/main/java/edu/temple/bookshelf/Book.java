@@ -12,6 +12,10 @@ public class Book implements Parcelable {
         this.author = author;
         this.title = title;
     }
+    public Book() {
+        author = "NoName Johnson";
+        title = "Untitled Goose Book";
+    }
 
     protected Book(Parcel in) {
         title = in.readString();

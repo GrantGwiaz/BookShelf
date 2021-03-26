@@ -5,10 +5,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BookListFragment.BookListFragmentInterface {
 
 
         FragmentManager fragmentManager;
@@ -26,23 +27,30 @@ public class MainActivity extends AppCompatActivity {
         BookList books = new BookList();
         books.addSomeBooks(10);
 
+        if(getSupportFragmentManager().findFragmentById((R.id.container_1)) instanceof BookListFragment
+                && getSupportFragmentManager().findFragmentById((R.id.container_1)) != null )
+        {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .attach(getSupportFragmentManager().findFragmentById((R.id.container_1)))
+                    .commit();
+
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container_1,BookListFragment.newInstance(books))
+                    .commit();
+        }
+
+
+    }
+
+    public void fragmentClick(Book book) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.listContainer,BookListFragment.newInstance(books))
+                .replace(R.id.container_1, BookDetailsFragment.newInstance(book))
+                .addToBackStack(null)
                 .commit();
-        /*
-        bookListFragment = BookListFragment.newInstance(books);
-        //bookDetailsFragment = new BookDetailsFragment();
-
-        fragmentManager = getSupportFragmentManager();
-
-        fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.add(R.id.listContainer, bookListFragment);
-
-        fragmentTransaction.commit();
-
-         */
     }
 
 
