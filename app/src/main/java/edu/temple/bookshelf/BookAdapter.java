@@ -16,9 +16,9 @@ import java.util.ArrayList;
 public class BookAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<Book> books;
+    private BookList books;
 
-    public BookAdapter (Context context, ArrayList<Book> books) {
+    public BookAdapter (Context context, BookList books) {
         this.context = context;
         this.books = books;
     }
@@ -52,13 +52,13 @@ public class BookAdapter extends BaseAdapter {
             linearLayout.addView(title);
             linearLayout.addView(author);
 
-            title.setTextSize(20);
-            author.setTextSize(10);
+            title.setTextSize(25);
+            author.setTextSize(20);
             title.setPadding(15, 30,15,0);
             author.setPadding(15, 10,15,0);
 
-            title.setGravity(Gravity.CENTER_HORIZONTAL);
-            author.setGravity(Gravity.CENTER_HORIZONTAL);
+            title.setGravity(Gravity.START);
+            author.setGravity(Gravity.START);
 
 
         } else {
@@ -68,7 +68,7 @@ public class BookAdapter extends BaseAdapter {
         }
 
         title.setText(books.get(position).getTitle());
-        author.setText(books.get(position).getTitle());
+        author.setText(books.get(position).getAuthor());
 
         return linearLayout;
     }
